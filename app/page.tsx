@@ -1,8 +1,26 @@
 import Navbar from '@/components/Navbar';
 import SearchForm from '@/components/SearchForm';
 import DestinationCard from '@/components/DestinationCard';
+import RecommendationsSection from '@/components/RecommendationsSection';
 import { mockDestinations } from '@/lib/mockData';
+import { UserProfile } from '@/types';
 import { Sparkles, TrendingUp, Leaf, Users, Star } from 'lucide-react';
+
+// Mock user for personalized recommendations - in production this would come from auth
+const mockUser: UserProfile = {
+  id: 'USER001',
+  name: 'John Doe',
+  email: 'john@example.com',
+  membershipTier: 'gold', // Gold member gets personalized recommendations
+  preferences: {
+    budgetRange: 'mid-range',
+    travelStyle: ['culture', 'food'],
+    cuisinePreferences: ['Japanese', 'French'],
+    destinations: ['Tokyo', 'Paris'],
+  },
+  travelHistory: ['New York', 'London'],
+  joinedDate: new Date('2023-01-15'),
+};
 
 export default function Home() {
   return (
@@ -35,6 +53,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* AI Recommendations Section */}
+      <RecommendationsSection user={mockUser} />
 
       {/* Inspiration Section */}
       <div className="section-container">
