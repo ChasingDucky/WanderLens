@@ -46,10 +46,10 @@ export async function POST(request: NextRequest) {
     // Initialize Gemini API with user token
     const genAI = new GoogleGenerativeAI(userToken);
 
-    // Temporarily remove tier restrictions - use stable model for all users
-    // Using gemini-1.5-flash as it's the most stable and widely available
-    // TODO: Re-enable tiered access once model names are confirmed
-    const modelName = 'gemini-1.5-flash';
+    // Use gemini-pro which is available in v1beta API
+    // Note: gemini-1.5-flash is NOT available in v1beta
+    // Available models: gemini-pro, gemini-1.5-pro
+    const modelName = 'gemini-pro';
 
     // Previous tier-based selection (commented out temporarily):
     // if (membershipTier === 'gold') {
