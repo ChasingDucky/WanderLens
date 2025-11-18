@@ -62,14 +62,40 @@ export async function POST(request: NextRequest) {
     const model = genAI.getGenerativeModel({ model: modelName });
 
     // Build conversation history for context
-    const history = conversationHistory?.map((msg: any) => ({
+    // Filter out the current message and ensure it starts with a user message
+    let history = conversationHistory?.map((msg: any) => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }],
     })) || [];
 
-    // Start chat with history
+    // Remove the last message (current message being sent)
+    if (history.length > 0 && history[history.length - 1].parts[0].text === message) {
+      history = history.slice(0, -1);
+    }
+
+    // Ensure history starts with a user message (Gemini API requirement)
+    while (history.length > 0 && history[0].role !== 'user') {
+      history.shift();
+    }
+
+    // Ensure alternating user/model pattern
+    const validHistory = [];
+    let lastRole = null;
+    for (const msg of history) {
+      if (msg.role !== lastRole) {
+        validHistory.push(msg);
+        lastRole = msg.role;
+      }
+    }
+
+    console.log(`Processed history: ${validHistory.length} messages (original: ${conversationHistory?.length || 0})`);
+    if (validHistory.length > 0) {
+      console.log(`First message role: ${validHistory[0].role}, Last message role: ${validHistory[validHistory.length - 1].role}`);
+    }
+
+    // Start chat with valid history
     const chat = model.startChat({
-      history,
+      history: validHistory,
       generationConfig: {
         maxOutputTokens: 2048,
         temperature: 0.7,
