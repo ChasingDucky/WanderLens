@@ -65,6 +65,7 @@ export default function AgentsPage() {
     setIsLoading(true);
 
     try {
+      console.log('Sending request to /api/agents/chat...');
       const response = await fetch('/api/agents/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -77,7 +78,9 @@ export default function AgentsPage() {
         }),
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (data.success) {
         setCurrentModel(data.modelUsed);
@@ -89,11 +92,36 @@ export default function AgentsPage() {
         };
         setMessages(prev => [...prev, assistantMessage]);
       } else {
-        throw new Error(data.error || 'Failed to get response');
+        // Enhanced error handling with detailed messages
+        let errorMsg = '抱歉，AI助手遇到了问题。\n\n';
+
+        if (data.error === 'Invalid API token') {
+          errorMsg += '❌ API Token无效\n请前往设置页面检查您的Gemini API Token是否正确。';
+        } else if (data.error === 'API quota exceeded') {
+          errorMsg += '⚠️ API配额已超限\n您的Gemini API配额已用完，请前往Google Cloud Console查看。';
+        } else if (data.error === 'Network connection failed') {
+          errorMsg += '🌐 网络连接失败\n服务器无法连接到Gemini API，请检查网络设置。';
+        } else if (data.error === 'Model not available') {
+          errorMsg += '🤖 模型不可用\n当前选择的AI模型可能暂时不可用，请尝试切换会员等级。';
+        } else {
+          errorMsg += `错误详情：${data.details || data.error || '未知错误'}`;
+        }
+
+        throw new Error(errorMsg);
       }
     } catch (error) {
+      console.error('=== Client Error ===');
       console.error('Error:', error);
-      const errorMsg = error instanceof Error ? error.message : '抱歉，我现在无法回答。请检查您的API Token是否正确。';
+
+      let errorMsg: string;
+      if (error instanceof Error) {
+        errorMsg = error.message;
+      } else if (typeof error === 'object' && error !== null && 'message' in error) {
+        errorMsg = String((error as any).message);
+      } else {
+        errorMsg = '抱歉，连接服务器时出现问题。\n\n可能的原因：\n1. 网络连接问题\n2. 服务器暂时不可用\n3. API Token配置错误\n\n请检查设置后重试。';
+      }
+
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

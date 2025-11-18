@@ -3,6 +3,18 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getAgentById } from '@/lib/agents';
 import { MembershipTier } from '@/types';
 
+// CORS headers for cross-origin requests
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { agentId, message, conversationHistory, userToken, membershipTier } = await request.json();
@@ -10,7 +22,7 @@ export async function POST(request: NextRequest) {
     if (!agentId || !message) {
       return NextResponse.json(
         { error: 'Agent ID and message are required' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -18,7 +30,7 @@ export async function POST(request: NextRequest) {
     if (!userToken) {
       return NextResponse.json(
         { error: 'Please set your Gemini API token in Settings' },
-        { status: 401 }
+        { status: 401, headers: corsHeaders }
       );
     }
 
@@ -27,7 +39,7 @@ export async function POST(request: NextRequest) {
     if (!agent) {
       return NextResponse.json(
         { error: 'Agent not found' },
-        { status: 404 }
+        { status: 404, headers: corsHeaders }
       );
     }
 
@@ -79,15 +91,42 @@ export async function POST(request: NextRequest) {
       message: text,
       agentId,
       modelUsed: modelName,
-    });
+    }, { headers: corsHeaders });
   } catch (error) {
-    console.error('Gemini API Error:', error);
+    // Enhanced error logging with more details
+    console.error('=== Gemini API Error ===');
+    console.error('Error type:', error?.constructor?.name);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+
+    // Check for specific error types
+    let errorMessage = 'Failed to generate response';
+    let errorDetails = error instanceof Error ? error.message : 'Unknown error';
+
+    // Handle specific Gemini API errors
+    if (error instanceof Error) {
+      if (error.message.includes('API key')) {
+        errorMessage = 'Invalid API token';
+        errorDetails = 'Please check your Gemini API token in Settings';
+      } else if (error.message.includes('quota')) {
+        errorMessage = 'API quota exceeded';
+        errorDetails = 'You have exceeded your Gemini API quota. Please check your Google Cloud Console.';
+      } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
+        errorMessage = 'Network connection failed';
+        errorDetails = 'Unable to connect to Gemini API. Please check your network connection.';
+      } else if (error.message.includes('model')) {
+        errorMessage = 'Model not available';
+        errorDetails = 'The selected Gemini model may not be available. Try a different membership tier.';
+      }
+    }
+
     return NextResponse.json(
       {
-        error: 'Failed to generate response',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        error: errorMessage,
+        details: errorDetails,
+        timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
