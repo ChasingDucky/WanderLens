@@ -1,7 +1,12 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Hotel } from '@/types';
 import { formatCurrency } from '@/lib/utils';
-import { MapPin, Star, Award, Wifi, Coffee } from 'lucide-react';
+import { toggleHotelFavorite, isHotelFavorite } from '@/lib/favorites';
+import { MapPin, Star, Heart } from 'lucide-react';
 
 interface HotelCardProps {
   hotel: Hotel;
@@ -9,6 +14,23 @@ interface HotelCardProps {
 }
 
 export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
+  const router = useRouter();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(isHotelFavorite(hotel.id));
+  }, [hotel.id]);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newState = toggleHotelFavorite(hotel.id);
+    setIsFavorite(newState);
+  };
+
+  const handleCardClick = () => {
+    router.push(`/hotels/${hotel.id}`);
+  };
+
   const renderStars = (count: number) => {
     return Array.from({ length: count }, (_, i) => (
       <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -30,7 +52,7 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
   };
 
   return (
-    <div className="card hover:shadow-lg transition-shadow p-0 overflow-hidden">
+    <div className="card hover:shadow-lg transition-shadow p-0 overflow-hidden cursor-pointer" onClick={handleCardClick}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Hotel Image */}
         <div className="md:col-span-1 h-64 md:h-auto relative overflow-hidden">
@@ -45,6 +67,16 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
               {renderStars(hotel.stars)}
             </div>
           </div>
+          <button
+            onClick={handleFavoriteClick}
+            className="absolute top-4 left-4 p-2 bg-white rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
+          >
+            <Heart
+              className={`w-5 h-5 ${
+                isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'
+              }`}
+            />
+          </button>
         </div>
 
         {/* Hotel Info */}
@@ -98,7 +130,10 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
                 <p className="text-sm text-gray-600">per night</p>
               </div>
               <button
-                onClick={() => onSelect?.(hotel)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect?.(hotel);
+                }}
                 className="btn-primary"
               >
                 View Details
