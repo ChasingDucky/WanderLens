@@ -1,4 +1,4 @@
-import { Flight, Hotel, Destination, PriceTrend, Train, RailPass } from '@/types';
+import { Flight, Hotel, Destination, PriceTrend, Train, RailPass, Activity } from '@/types';
 
 // Mock flight data
 export const mockFlights: Flight[] = [
@@ -730,11 +730,361 @@ export const mockRailPasses: RailPass[] = [
   },
 ];
 
+// Mock activities data
+export const mockActivities: Activity[] = [
+  {
+    id: 'ACT001',
+    name: 'Tokyo Skytree Observation Deck',
+    description: 'Experience breathtaking 360° views of Tokyo from the tallest tower in Japan. Visit both the Tembo Deck (350m) and Tembo Galleria (450m) for unparalleled city vistas.',
+    category: 'sightseeing',
+    duration: 2,
+    price: 28,
+    rating: 4.7,
+    location: {
+      lat: 35.7101,
+      lng: 139.8107,
+      address: '1 Chome-1-2 Oshiage, Sumida City, Tokyo',
+    },
+  },
+  {
+    id: 'ACT002',
+    name: 'Tsukiji Outer Market Food Tour',
+    description: 'Join a guided walking tour through Tokyo\'s famous Tsukiji Outer Market. Sample fresh sushi, street food, and traditional Japanese delicacies while learning about culinary culture.',
+    category: 'dining',
+    duration: 3,
+    price: 89,
+    rating: 4.9,
+    location: {
+      lat: 35.6654,
+      lng: 139.7707,
+      address: 'Tsukiji, Chuo City, Tokyo',
+    },
+  },
+  {
+    id: 'ACT003',
+    name: 'TeamLab Borderless Digital Art Museum',
+    description: 'Immerse yourself in a world of interactive digital art installations. Walk through stunning light displays, flower gardens, and infinite crystal universes.',
+    category: 'entertainment',
+    duration: 2.5,
+    price: 35,
+    rating: 4.8,
+    location: {
+      lat: 35.6251,
+      lng: 139.7754,
+      address: 'Azabudai Hills, Minato City, Tokyo',
+    },
+  },
+  {
+    id: 'ACT004',
+    name: 'Eiffel Tower Summit Access',
+    description: 'Skip the line and ascend to the summit of Paris\'s iconic landmark. Enjoy champagne at the top while taking in panoramic views of the City of Light.',
+    category: 'sightseeing',
+    duration: 2,
+    price: 42,
+    rating: 4.6,
+    location: {
+      lat: 48.8584,
+      lng: 2.2945,
+      address: 'Champ de Mars, 5 Avenue Anatole France, Paris',
+    },
+  },
+  {
+    id: 'ACT005',
+    name: 'Seine River Dinner Cruise',
+    description: 'Glide along the Seine River on a luxury glass-enclosed boat. Savor a gourmet 3-course French dinner while passing illuminated landmarks like Notre-Dame and the Louvre.',
+    category: 'dining',
+    duration: 2.5,
+    price: 125,
+    rating: 4.7,
+    location: {
+      lat: 48.8606,
+      lng: 2.3376,
+      address: 'Port de la Bourdonnais, Paris',
+    },
+  },
+  {
+    id: 'ACT006',
+    name: 'Louvre Museum Masterpieces Tour',
+    description: 'Skip-the-line access with an expert guide who brings the world\'s most famous artworks to life, including the Mona Lisa, Venus de Milo, and Winged Victory.',
+    category: 'sightseeing',
+    duration: 3,
+    price: 68,
+    rating: 4.8,
+    location: {
+      lat: 48.8606,
+      lng: 2.3376,
+      address: 'Rue de Rivoli, Paris',
+    },
+  },
+  {
+    id: 'ACT007',
+    name: 'Ubud Rice Terrace Swing & Waterfall Tour',
+    description: 'Soar above lush rice terraces on famous jungle swings, visit sacred waterfalls, and explore traditional Balinese temples in this Instagram-worthy adventure.',
+    category: 'adventure',
+    duration: 8,
+    price: 55,
+    rating: 4.9,
+    location: {
+      lat: -8.5069,
+      lng: 115.2625,
+      address: 'Tegallalang, Ubud, Bali',
+    },
+  },
+  {
+    id: 'ACT008',
+    name: 'Balinese Cooking Class & Market Tour',
+    description: 'Visit a local market to select fresh ingredients, then learn to prepare authentic Balinese dishes in a traditional compound. Enjoy your creations for lunch.',
+    category: 'dining',
+    duration: 5,
+    price: 45,
+    rating: 4.8,
+    location: {
+      lat: -8.5095,
+      lng: 115.2635,
+      address: 'Ubud Traditional Market, Bali',
+    },
+  },
+  {
+    id: 'ACT009',
+    name: 'Broadway Show: Hamilton',
+    description: 'Experience the revolutionary Broadway musical that blends hip-hop, jazz, and R&B to tell the story of American founding father Alexander Hamilton.',
+    category: 'entertainment',
+    duration: 2.75,
+    price: 189,
+    rating: 4.9,
+    location: {
+      lat: 40.7590,
+      lng: -73.9845,
+      address: 'Richard Rodgers Theatre, 226 W 46th St, New York',
+    },
+  },
+  {
+    id: 'ACT010',
+    name: 'Central Park Bike Tour',
+    description: 'Pedal through 843 acres of NYC\'s urban oasis. See Bethesda Fountain, Strawberry Fields, the Lake, and hidden gems with a knowledgeable local guide.',
+    category: 'adventure',
+    duration: 2,
+    price: 38,
+    rating: 4.6,
+    location: {
+      lat: 40.7829,
+      lng: -73.9654,
+      address: 'Central Park, New York',
+    },
+  },
+  {
+    id: 'ACT011',
+    name: 'Fifth Avenue Shopping Experience',
+    description: 'Personal shopping guide for luxury flagship stores including Tiffany & Co., Saks Fifth Avenue, Bergdorf Goodman, and Apple Fifth Avenue.',
+    category: 'shopping',
+    duration: 4,
+    price: 150,
+    rating: 4.5,
+    location: {
+      lat: 40.7614,
+      lng: -73.9776,
+      address: 'Fifth Avenue, New York',
+    },
+  },
+  {
+    id: 'ACT012',
+    name: 'Burj Khalifa At The Top Sky',
+    description: 'Ascend to the 148th floor of the world\'s tallest building for exclusive access, luxury lounge refreshments, and unmatched Dubai skyline views.',
+    category: 'sightseeing',
+    duration: 1.5,
+    price: 95,
+    rating: 4.8,
+    location: {
+      lat: 25.1972,
+      lng: 55.2744,
+      address: '1 Sheikh Mohammed bin Rashid Blvd, Dubai',
+    },
+  },
+  {
+    id: 'ACT013',
+    name: 'Desert Safari with BBQ Dinner',
+    description: 'Thrilling dune bashing in 4x4 vehicles, camel riding, sandboarding, henna painting, and traditional Emirati BBQ dinner under the stars with belly dancing show.',
+    category: 'adventure',
+    duration: 6,
+    price: 75,
+    rating: 4.7,
+    location: {
+      lat: 24.9247,
+      lng: 55.7656,
+      address: 'Dubai Desert Conservation Reserve, Dubai',
+    },
+  },
+  {
+    id: 'ACT014',
+    name: 'Dubai Mall & Gold Souk Shopping Tour',
+    description: 'Explore the world\'s largest shopping mall with 1,200+ stores, then visit the traditional Gold Souk to bargain for jewelry with a local expert.',
+    category: 'shopping',
+    duration: 5,
+    price: 60,
+    rating: 4.4,
+    location: {
+      lat: 25.1972,
+      lng: 55.2796,
+      address: 'Dubai Mall, Downtown Dubai',
+    },
+  },
+  {
+    id: 'ACT015',
+    name: 'Sagrada Familia Fast-Track & Guided Tour',
+    description: 'Skip the queues to explore Gaudí\'s unfinished masterpiece with an expert guide. Marvel at the stunning stained glass, unique architecture, and intricate details.',
+    category: 'sightseeing',
+    duration: 1.5,
+    price: 48,
+    rating: 4.9,
+    location: {
+      lat: 41.4036,
+      lng: 2.1744,
+      address: 'C/ de Mallorca, 401, Barcelona',
+    },
+  },
+  {
+    id: 'ACT016',
+    name: 'Barcelona Tapas & Wine Walking Tour',
+    description: 'Discover Barcelona\'s culinary scene like a local. Visit 5 authentic tapas bars in Gothic Quarter and El Born, sampling regional wines and traditional dishes.',
+    category: 'dining',
+    duration: 3.5,
+    price: 79,
+    rating: 4.8,
+    location: {
+      lat: 41.3851,
+      lng: 2.1734,
+      address: 'Gothic Quarter, Barcelona',
+    },
+  },
+  {
+    id: 'ACT017',
+    name: 'Park Güell Guided Tour',
+    description: 'Explore Gaudí\'s whimsical park with mosaic salamander, undulating benches, and gingerbread-style houses overlooking Barcelona.',
+    category: 'sightseeing',
+    duration: 1.5,
+    price: 32,
+    rating: 4.6,
+    location: {
+      lat: 41.4145,
+      lng: 2.1527,
+      address: '08024 Barcelona, Spain',
+    },
+  },
+  {
+    id: 'ACT018',
+    name: 'Gardens by the Bay Light Show',
+    description: 'Witness the mesmerizing Garden Rhapsody light and music show at the iconic Supertree Grove. Includes access to Cloud Forest and Flower Dome.',
+    category: 'entertainment',
+    duration: 2.5,
+    price: 35,
+    rating: 4.7,
+    location: {
+      lat: 1.2816,
+      lng: 103.8636,
+      address: '18 Marina Gardens Dr, Singapore',
+    },
+  },
+  {
+    id: 'ACT019',
+    name: 'Hawker Centre Food Adventure',
+    description: 'Taste your way through Singapore\'s best hawker centers with a local foodie guide. Sample chicken rice, laksa, satay, and chili crab.',
+    category: 'dining',
+    duration: 3,
+    price: 58,
+    rating: 4.9,
+    location: {
+      lat: 1.2833,
+      lng: 103.8442,
+      address: 'Maxwell Food Centre, Singapore',
+    },
+  },
+  {
+    id: 'ACT020',
+    name: 'British Museum Highlights Tour',
+    description: 'Navigate one of the world\'s greatest museums with an expert guide. See the Rosetta Stone, Elgin Marbles, Egyptian mummies, and more.',
+    category: 'sightseeing',
+    duration: 2.5,
+    price: 42,
+    rating: 4.7,
+    location: {
+      lat: 51.5194,
+      lng: -0.1270,
+      address: 'Great Russell St, London',
+    },
+  },
+  {
+    id: 'ACT021',
+    name: 'West End Theatre Show',
+    description: 'Premium seats for London\'s best musicals and plays. Choose from The Phantom of the Opera, Les Misérables, or The Lion King.',
+    category: 'entertainment',
+    duration: 2.5,
+    price: 95,
+    rating: 4.8,
+    location: {
+      lat: 51.5110,
+      lng: -0.1295,
+      address: 'Theatre District, West End, London',
+    },
+  },
+  {
+    id: 'ACT022',
+    name: 'Blue Lagoon Geothermal Spa',
+    description: 'Relax in Iceland\'s world-famous milky-blue geothermal waters. Includes silica mud mask, complimentary drink, and access to saunas and steam rooms.',
+    category: 'adventure',
+    duration: 3,
+    price: 95,
+    rating: 4.6,
+    location: {
+      lat: 63.8804,
+      lng: -22.4495,
+      address: 'Norðurljósavegur 9, Grindavík, Iceland',
+    },
+  },
+  {
+    id: 'ACT023',
+    name: 'Northern Lights Hunt',
+    description: 'Chase the Aurora Borealis with expert guides who know the best viewing spots. Includes thermal clothing, hot drinks, and professional photography.',
+    category: 'adventure',
+    duration: 5,
+    price: 125,
+    rating: 4.7,
+    location: {
+      lat: 64.1466,
+      lng: -21.9426,
+      address: 'Reykjavik departure point, Iceland',
+    },
+  },
+  {
+    id: 'ACT024',
+    name: 'Golden Circle Classic Tour',
+    description: 'Visit Iceland\'s top three natural wonders: Þingvellir National Park, Geysir geothermal area, and the powerful Gullfoss waterfall.',
+    category: 'sightseeing',
+    duration: 8,
+    price: 89,
+    rating: 4.8,
+    location: {
+      lat: 64.3271,
+      lng: -20.1201,
+      address: 'Golden Circle Route, Iceland',
+    },
+  },
+];
+
 // Helper function to search trains
 export const searchTrains = (origin?: string, destination?: string): Train[] => {
   return mockTrains.filter(train => {
     if (origin && !train.origin.toLowerCase().includes(origin.toLowerCase())) return false;
     if (destination && !train.destination.toLowerCase().includes(destination.toLowerCase())) return false;
+    return true;
+  });
+};
+
+// Helper function to search activities
+export const searchActivities = (destination?: string, category?: string, maxPrice?: number): Activity[] => {
+  return mockActivities.filter(activity => {
+    if (destination && !activity.location.address.toLowerCase().includes(destination.toLowerCase())) return false;
+    if (category && activity.category !== category) return false;
+    if (maxPrice && activity.price > maxPrice) return false;
     return true;
   });
 };

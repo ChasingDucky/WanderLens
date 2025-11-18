@@ -20,7 +20,7 @@ const QUICK_DATES = [
 
 export default function SearchForm() {
   const router = useRouter();
-  const [searchType, setSearchType] = useState<'flights' | 'hotels' | 'trains'>('flights');
+  const [searchType, setSearchType] = useState<'flights' | 'hotels' | 'trains' | 'activities'>('flights');
   const [showQuickOptions, setShowQuickOptions] = useState(true);
   const [formData, setFormData] = useState({
     origin: '',
@@ -95,6 +95,12 @@ export default function SearchForm() {
         passengers: formData.passengers.toString(),
       });
       router.push(`/trains?${params.toString()}`);
+    } else if (searchType === 'activities') {
+      const params = new URLSearchParams({
+        destination: formData.destination,
+        date: formData.departDate,
+      });
+      router.push(`/activities?${params.toString()}`);
     } else {
       const params = new URLSearchParams({
         city: formData.destination,
@@ -109,7 +115,7 @@ export default function SearchForm() {
   return (
     <div className="w-full max-w-5xl mx-auto">
       {/* Search Type Tabs */}
-      <div className="flex space-x-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setSearchType('flights')}
           className={`px-8 py-3 rounded-full font-semibold transition-all ${
@@ -140,6 +146,16 @@ export default function SearchForm() {
         >
           🏨 Hotels
         </button>
+        <button
+          onClick={() => setSearchType('activities')}
+          className={`px-8 py-3 rounded-full font-semibold transition-all ${
+            searchType === 'activities'
+              ? 'bg-white text-gray-900 shadow-lg scale-105'
+              : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+          }`}
+        >
+          🎯 Activities
+        </button>
       </div>
 
       {/* Popular Routes - Quick Access */}
@@ -167,7 +183,7 @@ export default function SearchForm() {
       {/* Search Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-2xl p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {/* Origin (Flights and Trains) */}
+          {/* Origin (Flights and Trains only) */}
           {(searchType === 'flights' || searchType === 'trains') && (
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
@@ -191,7 +207,7 @@ export default function SearchForm() {
           {/* Destination */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {(searchType === 'flights' || searchType === 'trains') ? 'To' : 'Where'}
+              {(searchType === 'flights' || searchType === 'trains') ? 'To' : searchType === 'activities' ? 'Destination' : 'Where'}
             </label>
             <div className="relative">
               <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -199,7 +215,12 @@ export default function SearchForm() {
                 type="text"
                 value={formData.destination}
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                placeholder={searchType === 'trains' ? 'Osaka' : searchType === 'flights' ? 'NRT' : 'Tokyo'}
+                placeholder={
+                  searchType === 'trains' ? 'Osaka' :
+                  searchType === 'flights' ? 'NRT' :
+                  searchType === 'activities' ? 'Paris, Tokyo, Dubai...' :
+                  'Tokyo'
+                }
                 className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
                 required
               />
@@ -209,7 +230,7 @@ export default function SearchForm() {
           {/* Depart Date */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {(searchType === 'flights' || searchType === 'trains') ? 'Depart' : 'Check-in'}
+              {(searchType === 'flights' || searchType === 'trains') ? 'Depart' : searchType === 'activities' ? 'Date' : 'Check-in'}
             </label>
             <div className="relative">
               <CalendarDays className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -218,13 +239,13 @@ export default function SearchForm() {
                 value={formData.departDate}
                 onChange={(e) => setFormData({ ...formData, departDate: e.target.value })}
                 className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
-                required
+                required={searchType !== 'activities'}
               />
             </div>
           </div>
 
-          {/* Return Date - Hide for trains */}
-          {searchType !== 'trains' && (
+          {/* Return Date - Hide for trains and activities */}
+          {searchType !== 'trains' && searchType !== 'activities' && (
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
                 {searchType === 'flights' ? 'Return' : 'Check-out'}
@@ -241,27 +262,29 @@ export default function SearchForm() {
             </div>
           )}
 
-          {/* Passengers */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {(searchType === 'flights' || searchType === 'trains') ? 'Travelers' : 'Guests'}
-            </label>
-            <div className="relative">
-              <Users className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
-              <select
-                value={formData.passengers}
-                onChange={(e) => setFormData({ ...formData, passengers: parseInt(e.target.value) })}
-                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium appearance-none bg-white"
-                required
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'Traveler' : 'Travelers'}
-                  </option>
-                ))}
-              </select>
+          {/* Passengers - Hide for activities */}
+          {searchType !== 'activities' && (
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+                {(searchType === 'flights' || searchType === 'trains') ? 'Travelers' : 'Guests'}
+              </label>
+              <div className="relative">
+                <Users className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                <select
+                  value={formData.passengers}
+                  onChange={(e) => setFormData({ ...formData, passengers: parseInt(e.target.value) })}
+                  className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium appearance-none bg-white"
+                  required
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                    <option key={num} value={num}>
+                      {num} {num === 1 ? 'Traveler' : 'Travelers'}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Search Button */}
           <div className="flex items-end">
