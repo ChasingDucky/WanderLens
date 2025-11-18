@@ -7,7 +7,7 @@ import FlightCard from '@/components/FlightCard';
 import PriceTrendChart from '@/components/PriceTrendChart';
 import { mockFlights, generatePriceTrend } from '@/lib/mockData';
 import { Flight } from '@/types';
-import { SlidersHorizontal, ArrowUpDown, Lightbulb, X } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, Lightbulb, X, Zap, DollarSign, Clock, Award } from 'lucide-react';
 
 interface FlightFilters {
   maxPrice: number;
@@ -17,6 +17,13 @@ interface FlightFilters {
   travelClass: string[];
 }
 
+// Quick filter presets
+const QUICK_PRESETS = [
+  { label: '💰 Best Value', icon: DollarSign, filters: { maxPrice: 1000, stops: ['nonstop', '1stop'], travelClass: ['Economy'] } },
+  { label: '⚡ Fastest', icon: Zap, filters: { stops: ['nonstop'], travelClass: [] } },
+  { label: '🏆 Premium', icon: Award, filters: { travelClass: ['Business', 'First Class'], stops: ['nonstop'] } },
+];
+
 function FlightSearchContent() {
   const searchParams = useSearchParams();
   const origin = searchParams.get('origin') || '';
@@ -25,6 +32,7 @@ function FlightSearchContent() {
   const [sortBy, setSortBy] = useState<'price' | 'duration' | 'rating'>('price');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [activePreset, setActivePreset] = useState<string | null>(null);
 
   const [filters, setFilters] = useState<FlightFilters>({
     maxPrice: 5000,
@@ -103,6 +111,18 @@ function FlightSearchContent() {
       departureTime: [],
       travelClass: [],
     });
+    setActivePreset(null);
+  };
+
+  const applyPreset = (presetLabel: string, presetFilters: any) => {
+    setActivePreset(presetLabel);
+    setFilters(prev => ({
+      maxPrice: presetFilters.maxPrice || 5000,
+      stops: presetFilters.stops || [],
+      airlines: [],
+      departureTime: [],
+      travelClass: presetFilters.travelClass || [],
+    }));
   };
 
   const activeFilterCount =
@@ -130,6 +150,23 @@ function FlightSearchContent() {
   const averagePrice = sortedFlights.reduce((sum, f) => sum + f.price, 0) / sortedFlights.length || 850;
   const priceTrend = generatePriceTrend(averagePrice);
 
+  // Calculate best deals
+  const getBestDeals = () => {
+    if (sortedFlights.length === 0) return { cheapest: null, fastest: null, bestValue: null };
+
+    const cheapest = sortedFlights.reduce((prev, curr) => prev.price < curr.price ? prev : curr);
+    const fastest = sortedFlights.reduce((prev, curr) => prev.duration < curr.duration ? prev : curr);
+
+    // Best value: high rating (>4.0) with price below average
+    const bestValue = sortedFlights
+      .filter(f => f.rating >= 4.0 && f.price <= averagePrice)
+      .sort((a, b) => (b.rating / b.price) - (a.rating / a.price))[0] || null;
+
+    return { cheapest, fastest, bestValue };
+  };
+
+  const bestDeals = getBestDeals();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -148,6 +185,27 @@ function FlightSearchContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Quick Filter Presets */}
+            <div className="flex flex-wrap gap-3">
+              {QUICK_PRESETS.map((preset) => {
+                const Icon = preset.icon;
+                return (
+                  <button
+                    key={preset.label}
+                    onClick={() => applyPreset(preset.label, preset.filters)}
+                    className={`flex items-center space-x-2 px-4 py-2.5 rounded-full font-medium transition-all ${
+                      activePreset === preset.label
+                        ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg scale-105'
+                        : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-gray-400 hover:shadow-md'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="text-sm">{preset.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
             {/* Controls */}
             <div className="flex items-center justify-between">
               <button
@@ -306,13 +364,21 @@ function FlightSearchContent() {
             {/* Flight List */}
             {sortedFlights.length > 0 ? (
               <div className="space-y-4">
-                {sortedFlights.map((flight) => (
-                  <FlightCard
-                    key={flight.id}
-                    flight={flight}
-                    onSelect={setSelectedFlight}
-                  />
-                ))}
+                {sortedFlights.map((flight) => {
+                  const badges = [];
+                  if (bestDeals.cheapest?.id === flight.id) badges.push('cheapest');
+                  if (bestDeals.fastest?.id === flight.id) badges.push('fastest');
+                  if (bestDeals.bestValue?.id === flight.id) badges.push('best-value');
+
+                  return (
+                    <FlightCard
+                      key={flight.id}
+                      flight={flight}
+                      onSelect={setSelectedFlight}
+                      badges={badges}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <div className="card text-center py-12">

@@ -10,11 +10,25 @@ import { Plane, Clock, Leaf, Heart, ChevronRight } from 'lucide-react';
 interface FlightCardProps {
   flight: Flight;
   onSelect?: (flight: Flight) => void;
+  badges?: string[];
 }
 
-export default function FlightCard({ flight, onSelect }: FlightCardProps) {
+export default function FlightCard({ flight, onSelect, badges = [] }: FlightCardProps) {
   const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const getBadgeConfig = (badge: string) => {
+    switch (badge) {
+      case 'cheapest':
+        return { label: '💰 Cheapest', color: 'bg-green-500 text-white' };
+      case 'fastest':
+        return { label: '⚡ Fastest', color: 'bg-blue-500 text-white' };
+      case 'best-value':
+        return { label: '⭐ Best Value', color: 'bg-amber-500 text-white' };
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     setIsFavorite(isFlightFavorite(flight.id));
@@ -59,6 +73,24 @@ export default function FlightCard({ flight, onSelect }: FlightCardProps) {
             />
           </button>
         </div>
+
+        {/* Badges */}
+        {badges.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {badges.map((badge) => {
+              const config = getBadgeConfig(badge);
+              if (!config) return null;
+              return (
+                <span
+                  key={badge}
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${config.color} shadow-md`}
+                >
+                  {config.label}
+                </span>
+              );
+            })}
+          </div>
+        )}
 
         {/* Route */}
         <div className="flex items-center justify-between mb-6">
