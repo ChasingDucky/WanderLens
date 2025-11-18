@@ -110,7 +110,7 @@ export default function ActivitiesPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
           <div className="lg:w-72 flex-shrink-0">
@@ -239,7 +239,7 @@ export default function ActivitiesPage() {
                       <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                       <h2 className="text-2xl font-bold text-gray-900">Top Rated Experiences</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredActivities.topRated.map((activity) => (
                         <ActivityCard key={activity.id} activity={activity} badge="top-rated" />
                       ))}
@@ -254,7 +254,7 @@ export default function ActivitiesPage() {
                       <DollarSign className="w-5 h-5 text-green-600" />
                       <h2 className="text-2xl font-bold text-gray-900">Best Value</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredActivities.bestValue.map((activity) => (
                         <ActivityCard key={activity.id} activity={activity} badge="best-value" />
                       ))}
@@ -269,7 +269,7 @@ export default function ActivitiesPage() {
                       <Sparkles className="w-5 h-5 text-orange-600" />
                       <h2 className="text-2xl font-bold text-gray-900">Adventure Awaits</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredActivities.adventure.map((activity) => (
                         <ActivityCard key={activity.id} activity={activity} />
                       ))}
@@ -301,7 +301,7 @@ export default function ActivitiesPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {sortedActivities.map((activity) => (
                   <ActivityCard key={activity.id} activity={activity} />
                 ))}

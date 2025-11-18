@@ -127,7 +127,7 @@ export default function RestaurantsPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
           <div className="lg:w-72 flex-shrink-0">
@@ -249,7 +249,7 @@ export default function RestaurantsPage() {
                       <Award className="w-5 h-5 text-red-600" />
                       <h2 className="text-2xl font-bold text-gray-900">Michelin Starred</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredRestaurants.michelin.map((restaurant) => (
                         <RestaurantCard key={restaurant.id} restaurant={restaurant} badge="michelin" />
                       ))}
@@ -264,7 +264,7 @@ export default function RestaurantsPage() {
                       <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                       <h2 className="text-2xl font-bold text-gray-900">Top Rated</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredRestaurants.topRated.map((restaurant) => (
                         <RestaurantCard key={restaurant.id} restaurant={restaurant} badge="top-rated" />
                       ))}
@@ -279,7 +279,7 @@ export default function RestaurantsPage() {
                       <TrendingUp className="w-5 h-5 text-green-600" />
                       <h2 className="text-2xl font-bold text-gray-900">Budget-Friendly Favorites</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                       {featuredRestaurants.budgetFriendly.map((restaurant) => (
                         <RestaurantCard key={restaurant.id} restaurant={restaurant} badge="budget" />
                       ))}
@@ -311,7 +311,7 @@ export default function RestaurantsPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {sortedRestaurants.map((restaurant) => (
                   <RestaurantCard key={restaurant.id} restaurant={restaurant} />
                 ))}

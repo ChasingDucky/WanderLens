@@ -150,7 +150,7 @@ export default function AIPlannePage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         {/* Membership Status Banner */}
         {!isGoldMember && (
           <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-400 rounded-2xl p-6 mb-8">
@@ -180,7 +180,7 @@ export default function AIPlannePage() {
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Plan Your Trip</h2>
 
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {/* Destination */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">

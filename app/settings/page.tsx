@@ -96,7 +96,7 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-2">
@@ -114,7 +114,7 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* AI Configuration Section */}
           <div className="card border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50">
             <div className="flex items-center space-x-3 mb-6">
@@ -126,7 +126,7 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Membership Tier Selection - Booking Genius Style */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -303,7 +303,7 @@ export default function SettingsPage() {
               <h2 className="text-xl font-bold text-gray-900">Regional Settings</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <DollarSign className="w-4 h-4 inline mr-1" />

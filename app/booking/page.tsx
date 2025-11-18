@@ -234,7 +234,7 @@ function BookingContent() {
 
             {/* Step 2: Payment Information */}
             {step === 2 && (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {/* Payment Method Selection */}
                 <div className="card">
                   <div className="flex items-center space-x-3 mb-6">
@@ -587,7 +587,7 @@ function BookingContent() {
                   <h2 className="text-xl font-bold text-gray-900">Review Your Information</h2>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div>
                     <h3 className="text-sm font-semibold text-gray-700 mb-2">Personal Information</h3>
                     <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">

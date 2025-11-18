@@ -102,7 +102,7 @@ function HotelSearchContent() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -116,7 +116,7 @@ function HotelSearchContent() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
-            <div className="card sticky top-24 space-y-6">
+            <div className="card sticky top-24 space-y-8">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-900 flex items-center">
                   <SlidersHorizontal className="w-5 h-5 mr-2" />
@@ -235,7 +235,7 @@ function HotelSearchContent() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-8">
             {/* Controls */}
             <div className="flex items-center justify-between card">
               <div className="flex items-center space-x-2">
