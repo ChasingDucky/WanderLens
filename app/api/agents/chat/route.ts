@@ -1,19 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getAgentById } from '@/lib/agents';
-
-// Initialize Gemini API
-// In production, this should be stored in environment variables
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AIzaSyDIuMHYKDv8tI35XYe0EIoVJfQp_h6Hgzc');
+import { MembershipTier } from '@/types';
 
 export async function POST(request: NextRequest) {
   try {
-    const { agentId, message, conversationHistory } = await request.json();
+    const { agentId, message, conversationHistory, userToken, membershipTier } = await request.json();
 
     if (!agentId || !message) {
       return NextResponse.json(
         { error: 'Agent ID and message are required' },
         { status: 400 }
+      );
+    }
+
+    // Check if user provided token
+    if (!userToken) {
+      return NextResponse.json(
+        { error: 'Please set your Gemini API token in Settings' },
+        { status: 401 }
       );
     }
 
@@ -26,8 +31,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    // Initialize Gemini API with user token
+    const genAI = new GoogleGenerativeAI(userToken);
+
+    // Select model based on membership tier
+    // Gold members get Gemini 1.5 Pro (better quality, more expensive)
+    // Standard members get Gemini 2.0 Flash (faster, cheaper)
+    const modelName = membershipTier === 'gold' ? 'gemini-1.5-pro' : 'gemini-2.0-flash-exp';
+    const model = genAI.getGenerativeModel({ model: modelName });
 
     // Build conversation history for context
     const history = conversationHistory?.map((msg: any) => ({
@@ -58,6 +69,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: text,
       agentId,
+      modelUsed: modelName,
     });
   } catch (error) {
     console.error('Gemini API Error:', error);

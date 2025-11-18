@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import { Settings, Globe, DollarSign, Bell, User, Shield, Moon, Sun } from 'lucide-react';
+import { Settings, Globe, DollarSign, Bell, User, Shield, Moon, Sun, Bot, Crown, Key, Eye, EyeOff } from 'lucide-react';
+import { MembershipTier } from '@/types';
 
 interface UserSettings {
   currency: string;
@@ -52,18 +53,30 @@ export default function SettingsPage() {
     email: '',
   });
 
+  const [geminiToken, setGeminiToken] = useState('');
+  const [membershipTier, setMembershipTier] = useState<MembershipTier>('standard');
+  const [showToken, setShowToken] = useState(false);
   const [saved, setSaved] = useState(false);
 
   // Load settings from localStorage on mount
   useEffect(() => {
-    const savedSettings = localStorage.getItem('wanderlens_settings');
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+    if (typeof window !== 'undefined') {
+      const savedSettings = localStorage.getItem('wanderlens_settings');
+      if (savedSettings) {
+        setSettings(JSON.parse(savedSettings));
+      }
+
+      const storedToken = localStorage.getItem('geminiToken');
+      const storedTier = localStorage.getItem('membershipTier') as MembershipTier;
+      if (storedToken) setGeminiToken(storedToken);
+      if (storedTier) setMembershipTier(storedTier);
     }
   }, []);
 
   const handleSave = () => {
     localStorage.setItem('wanderlens_settings', JSON.stringify(settings));
+    localStorage.setItem('geminiToken', geminiToken);
+    localStorage.setItem('membershipTier', membershipTier);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -101,6 +114,129 @@ export default function SettingsPage() {
         )}
 
         <div className="space-y-6">
+          {/* AI Configuration Section */}
+          <div className="card border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50">
+            <div className="flex items-center space-x-3 mb-6">
+              <Bot className="w-6 h-6 text-purple-600" />
+              <h2 className="text-xl font-bold text-gray-900">AI助手配置</h2>
+              <div className="flex-1"></div>
+              <div className="px-3 py-1 bg-purple-600 text-white rounded-full text-xs font-bold">
+                AI功能
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Membership Tier Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <Crown className="w-4 h-4 inline mr-1" />
+                  会员等级
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setMembershipTier('standard')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      membershipTier === 'standard'
+                        ? 'border-blue-600 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className="text-3xl mb-2">🎫</div>
+                    <p className={`font-bold mb-1 ${membershipTier === 'standard' ? 'text-blue-600' : 'text-gray-900'}`}>
+                      标准会员
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">使用 Gemini 2.0 Flash</p>
+                    <ul className="text-xs text-left space-y-1 text-gray-600">
+                      <li>✓ 更快的响应速度</li>
+                      <li>✓ 更低的使用成本</li>
+                      <li>✓ 适合日常咨询</li>
+                    </ul>
+                  </button>
+
+                  <button
+                    onClick={() => setMembershipTier('gold')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      membershipTier === 'gold'
+                        ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-yellow-50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className="text-3xl mb-2">👑</div>
+                    <p className={`font-bold mb-1 ${membershipTier === 'gold' ? 'text-amber-600' : 'text-gray-900'}`}>
+                      金卡会员
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">使用 Gemini 1.5 Pro</p>
+                    <ul className="text-xs text-left space-y-1 text-gray-600">
+                      <li>✓ 更高质量回答</li>
+                      <li>✓ 更强理解能力</li>
+                      <li>✓ 复杂问题处理</li>
+                    </ul>
+                  </button>
+                </div>
+              </div>
+
+              {/* Gemini API Token */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Key className="w-4 h-4 inline mr-1" />
+                  Gemini API Token
+                </label>
+                <div className="relative">
+                  <input
+                    type={showToken ? 'text' : 'password'}
+                    value={geminiToken}
+                    onChange={(e) => setGeminiToken(e.target.value)}
+                    placeholder="输入您的 Gemini API Token"
+                    className="w-full px-4 py-3 pr-12 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowToken(!showToken)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showToken ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-xs text-blue-800 mb-2">
+                    <span className="font-semibold">如何获取 API Token：</span>
+                  </p>
+                  <ol className="text-xs text-blue-700 space-y-1 ml-4 list-decimal">
+                    <li>访问 <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline font-medium">Google AI Studio</a></li>
+                    <li>登录您的 Google 账号</li>
+                    <li>点击 &quot;Create API Key&quot; 创建新密钥</li>
+                    <li>复制密钥并粘贴到上方输入框</li>
+                  </ol>
+                </div>
+              </div>
+
+              {/* Model Info */}
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-3 text-sm">当前配置</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">会员等级：</span>
+                    <span className={`font-semibold ${membershipTier === 'gold' ? 'text-amber-600' : 'text-blue-600'}`}>
+                      {membershipTier === 'gold' ? '金卡会员 👑' : '标准会员 🎫'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">使用模型：</span>
+                    <span className="font-semibold text-purple-600">
+                      {membershipTier === 'gold' ? 'Gemini 1.5 Pro' : 'Gemini 2.0 Flash'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Token状态：</span>
+                    <span className={`font-semibold ${geminiToken ? 'text-green-600' : 'text-red-600'}`}>
+                      {geminiToken ? '✓ 已配置' : '✗ 未配置'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Profile Section */}
           <div className="card">
             <div className="flex items-center space-x-3 mb-6">

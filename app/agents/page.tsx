@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { AI_AGENTS } from '@/lib/agents';
-import { ChatMessage, AgentType } from '@/types';
-import { Send, Loader2, ArrowLeft, Sparkles, Bot } from 'lucide-react';
+import { ChatMessage, AgentType, MembershipTier } from '@/types';
+import { Send, Loader2, ArrowLeft, Sparkles, Bot, Settings, AlertCircle } from 'lucide-react';
 
 export default function AgentsPage() {
   const router = useRouter();
@@ -16,9 +16,22 @@ export default function AgentsPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userToken, setUserToken] = useState<string>('');
+  const [membershipTier, setMembershipTier] = useState<MembershipTier>('standard');
+  const [currentModel, setCurrentModel] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const currentAgent = selectedAgent ? AI_AGENTS.find(a => a.id === selectedAgent) : null;
+
+  // Load user settings from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('geminiToken');
+      const storedTier = localStorage.getItem('membershipTier') as MembershipTier;
+      if (storedToken) setUserToken(storedToken);
+      if (storedTier) setMembershipTier(storedTier);
+    }
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,6 +39,18 @@ export default function AgentsPage() {
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || !selectedAgent || isLoading) return;
+
+    // Check if token is set
+    if (!userToken) {
+      const errorMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: '请先在设置中配置您的 Gemini API Token。点击右上角的"Settings"进行配置。',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -46,12 +71,15 @@ export default function AgentsPage() {
           agentId: selectedAgent,
           message: inputMessage,
           conversationHistory: messages,
+          userToken,
+          membershipTier,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
+        setCurrentModel(data.modelUsed);
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
@@ -64,10 +92,11 @@ export default function AgentsPage() {
       }
     } catch (error) {
       console.error('Error:', error);
+      const errorMsg = error instanceof Error ? error.message : '抱歉，我现在无法回答。请检查您的API Token是否正确。';
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: '抱歉，我现在无法回答。请稍后再试。',
+        content: errorMsg,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -115,9 +144,25 @@ export default function AgentsPage() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               选择一个专业的AI助手，为您提供个性化的旅行建议和规划服务
             </p>
-            <div className="mt-4 inline-flex items-center space-x-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-              <Sparkles className="w-4 h-4" />
-              <span>由 Google Gemini 3.0 Pro 驱动</span>
+            <div className="mt-4 flex flex-col items-center gap-3">
+              <div className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                <Sparkles className="w-4 h-4" />
+                <span>
+                  {membershipTier === 'gold' ? '由 Gemini 1.5 Pro 驱动' : '由 Gemini 2.0 Flash 驱动'} • {membershipTier === 'gold' ? '金卡会员' : '标准会员'}
+                </span>
+              </div>
+              {!userToken && (
+                <div className="inline-flex items-center space-x-2 px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>请先在设置中配置 API Token</span>
+                  <button
+                    onClick={() => router.push('/settings')}
+                    className="ml-2 px-3 py-1 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
+                  >
+                    前往设置
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -191,8 +236,15 @@ export default function AgentsPage() {
                 <p className="text-sm text-gray-500">{currentAgent?.description}</p>
               </div>
             </div>
-            <div className={`px-4 py-2 bg-gradient-to-r ${currentAgent?.color} text-white rounded-full text-sm font-medium`}>
-              在线
+            <div className="flex items-center gap-2">
+              {currentModel && (
+                <div className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                  {currentModel}
+                </div>
+              )}
+              <div className={`px-4 py-2 bg-gradient-to-r ${currentAgent?.color} text-white rounded-full text-sm font-medium`}>
+                在线
+              </div>
             </div>
           </div>
         </div>
