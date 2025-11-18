@@ -2,88 +2,139 @@ import Navbar from '@/components/Navbar';
 import SearchForm from '@/components/SearchForm';
 import DestinationCard from '@/components/DestinationCard';
 import { mockDestinations } from '@/lib/mockData';
-import { Sparkles, TrendingUp, Leaf, Users } from 'lucide-react';
+import { Sparkles, TrendingUp, Leaf, Users, Star } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 text-white">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Your Journey Starts Here
+      {/* Hero Section - Airbnb Style */}
+      <div className="relative h-[600px] -mt-px">
+        {/* Background Image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-700">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920')] bg-cover bg-center opacity-40"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative h-full flex flex-col items-center justify-center px-4">
+          <div className="text-center mb-8">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+              Not sure where to go?
+              <br />
+              <span className="text-4xl md:text-6xl">Perfect.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-primary-50 max-w-3xl mx-auto">
-              Smart travel planning with AI-powered recommendations, price predictions, and personalized itineraries
+            <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
+              Discover amazing destinations and experiences around the world
             </p>
           </div>
 
-          <SearchForm />
+          {/* Search Form */}
+          <div className="w-full max-w-4xl">
+            <SearchForm />
+          </div>
+        </div>
+      </div>
+
+      {/* Inspiration Section */}
+      <div className="section-container">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-4">
+            Inspiration for your next trip
+          </h2>
+          <p className="text-xl text-gray-600">
+            Explore trending destinations and unique experiences
+          </p>
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex justify-center space-x-4 mb-12 flex-wrap gap-2">
+          {['All', 'Beaches', 'Mountains', 'Cities', 'Culture'].map((category) => (
+            <button
+              key={category}
+              className={`px-6 py-3 rounded-full font-medium transition-all ${
+                category === 'All'
+                  ? 'bg-gray-900 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Destinations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mockDestinations.map((destination) => (
+            <DestinationCard key={destination.id} destination={destination} />
+          ))}
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Why Choose WanderLens?
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-8 h-8 text-primary-600" />
+      <div className="bg-gradient-to-b from-gray-50 to-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Sparkles className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Smart Recommendations</h3>
+              <p className="text-gray-600 leading-relaxed">
+                AI-powered suggestions tailored to your preferences
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">AI-Powered Recommendations</h3>
-            <p className="text-gray-600">
-              Personalized suggestions based on your preferences and travel history
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <TrendingUp className="w-8 h-8 text-green-600" />
+
+            <div className="text-center group">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <TrendingUp className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Price Tracking</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Know when to book with predictive pricing
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Price Predictions</h3>
-            <p className="text-gray-600">
-              Know the best time to book with our advanced price forecasting
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Leaf className="w-8 h-8 text-emerald-600" />
+
+            <div className="text-center group">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Leaf className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Sustainable Travel</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Choose eco-friendly options for your journey
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Eco-Friendly Options</h3>
-            <p className="text-gray-600">
-              See carbon emissions and choose sustainable travel options
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-purple-600" />
+
+            <div className="text-center group">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Shared Planning</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Collaborate with friends and family easily
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Collaborative Planning</h3>
-            <p className="text-gray-600">
-              Share and plan trips together with friends and family
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Popular Destinations */}
-      <div className="bg-gray-50 py-16">
+      {/* Trust Section */}
+      <div className="py-16 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Popular Destinations
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Discover the world&apos;s most amazing places
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockDestinations.map((destination) => (
-              <DestinationCard key={destination.id} destination={destination} />
-            ))}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+            </div>
+            <h3 className="text-3xl font-semibold text-gray-900 mb-2">
+              Trusted by thousands of travelers
+            </h3>
+            <p className="text-xl text-gray-600">
+              Join our community and start planning your perfect trip today
+            </p>
           </div>
         </div>
       </div>
