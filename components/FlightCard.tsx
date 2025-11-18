@@ -1,6 +1,11 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Flight } from '@/types';
 import { formatCurrency, formatDuration, formatTime, getAirportName, getCabinClassLabel } from '@/lib/utils';
-import { Plane, Clock, Leaf, TrendingUp, AlertCircle } from 'lucide-react';
+import { toggleFlightFavorite, isFlightFavorite } from '@/lib/favorites';
+import { Plane, Clock, Leaf, TrendingUp, Heart } from 'lucide-react';
 
 interface FlightCardProps {
   flight: Flight;
@@ -8,6 +13,23 @@ interface FlightCardProps {
 }
 
 export default function FlightCard({ flight, onSelect }: FlightCardProps) {
+  const router = useRouter();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(isFlightFavorite(flight.id));
+  }, [flight.id]);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newState = toggleFlightFavorite(flight.id);
+    setIsFavorite(newState);
+  };
+
+  const handleCardClick = () => {
+    router.push(`/flights/${flight.id}`);
+  };
+
   const getRatingColor = (rating: number) => {
     if (rating >= 4.5) return 'text-green-600 bg-green-50';
     if (rating >= 4.0) return 'text-blue-600 bg-blue-50';
@@ -22,15 +44,27 @@ export default function FlightCard({ flight, onSelect }: FlightCardProps) {
   };
 
   return (
-    <div className="card hover:shadow-lg transition-shadow">
+    <div className="card hover:shadow-lg transition-shadow cursor-pointer" onClick={handleCardClick}>
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         {/* Flight Info */}
         <div className="flex-1 space-y-4">
           {/* Airline and Flight Number */}
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">{flight.airline}</h3>
-              <p className="text-sm text-gray-600">{flight.flightNumber}</p>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={handleFavoriteClick}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <Heart
+                  className={`w-5 h-5 ${
+                    isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'
+                  }`}
+                />
+              </button>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">{flight.airline}</h3>
+                <p className="text-sm text-gray-600">{flight.flightNumber}</p>
+              </div>
             </div>
             <div className={`px-3 py-1 rounded-full ${getRatingColor(flight.rating)}`}>
               <span className="text-sm font-semibold">{flight.rating.toFixed(1)}</span>
@@ -93,10 +127,13 @@ export default function FlightCard({ flight, onSelect }: FlightCardProps) {
             <p className="text-sm text-gray-600">per person</p>
           </div>
           <button
-            onClick={() => onSelect?.(flight)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect?.(flight);
+            }}
             className="btn-primary w-full lg:w-auto"
           >
-            Select Flight
+            View Details
           </button>
         </div>
       </div>

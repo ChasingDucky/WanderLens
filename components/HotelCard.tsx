@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Hotel } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { MapPin, Star, Award, Wifi, Coffee } from 'lucide-react';
@@ -33,10 +34,11 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Hotel Image */}
         <div className="md:col-span-1 h-64 md:h-auto relative overflow-hidden">
-          <img
+          <Image
             src={hotel.images[0]}
             alt={hotel.name}
-            className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+            fill
+            className="object-cover hover:scale-110 transition-transform duration-300"
           />
           <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-lg shadow-lg">
             <div className="flex items-center space-x-1">

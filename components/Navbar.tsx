@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Plane, Hotel, MapPin, Menu, X } from 'lucide-react';
+import { Plane, Hotel, MapPin, Menu, X, Info, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -22,7 +22,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             <Link
               href="/flights"
               className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
@@ -43,6 +43,21 @@ export default function Navbar() {
             >
               <MapPin className="w-5 h-5" />
               <span className="font-medium">Itinerary</span>
+            </Link>
+            <div className="border-l border-gray-300 h-6"></div>
+            <Link
+              href="/about"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+            >
+              <Info className="w-5 h-5" />
+              <span className="font-medium">About</span>
+            </Link>
+            <Link
+              href="/help"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+            >
+              <HelpCircle className="w-5 h-5" />
+              <span className="font-medium">Help</span>
             </Link>
           </div>
 
@@ -81,6 +96,23 @@ export default function Navbar() {
             >
               <MapPin className="w-5 h-5" />
               <span className="font-medium">Itinerary</span>
+            </Link>
+            <div className="border-t border-gray-300 my-2"></div>
+            <Link
+              href="/about"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Info className="w-5 h-5" />
+              <span className="font-medium">About</span>
+            </Link>
+            <Link
+              href="/help"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <HelpCircle className="w-5 h-5" />
+              <span className="font-medium">Help</span>
             </Link>
           </div>
         )}

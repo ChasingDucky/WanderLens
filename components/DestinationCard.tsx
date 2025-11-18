@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Destination } from '@/types';
 import { MapPin, TrendingUp } from 'lucide-react';
 
@@ -9,10 +10,11 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
   return (
     <div className="card group cursor-pointer hover:shadow-lg transition-shadow overflow-hidden p-0">
       <div className="relative h-48 overflow-hidden">
-        <img
+        <Image
           src={destination.imageUrl}
           alt={destination.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
         <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
           <TrendingUp className="w-4 h-4 text-green-600" />
