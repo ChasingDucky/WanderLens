@@ -2,6 +2,116 @@
 
 All notable changes to WanderLens will be documented in this file.
 
+## [Airbnb-Inspired UI Redesign] - 2025-11-18
+
+### 🎨 Major Design Overhaul
+
+#### Global Visual Language
+- **Apple System Font Stack** - Professional, native typography across all platforms
+- **Rose & Pink Brand Colors** - Gradient buttons and accents inspired by Airbnb
+- **Generous Spacing** - Improved breathing room and visual hierarchy
+- **Smooth Animations** - 300-700ms transitions for professional feel
+- **Custom Scrollbars** - Subtle, rounded scrollbar styling
+- **Consistent Rounded Corners** - 2xl (16px) radius for modern look
+
+#### Enhanced Component Library
+- **Button Variants**
+  - `btn-primary`: Rose-to-pink gradient with shadow elevation
+  - `btn-secondary`: Clean outline style with hover states
+  - `btn-ghost`: Subtle hover effect for tertiary actions
+- **Card Styles**
+  - `.card`: Enhanced shadow and hover effects
+  - `.card-interactive`: Hover scale and shadow transition
+  - Image containers with zoom on hover
+- **Badges & Pills**
+  - Price badges with dark background
+  - Rating badges with soft backgrounds
+  - Badge variants (primary, success, warning)
+
+#### Homepage Transformation
+- **Hero Section**
+  - Full-height (600px) with atmospheric image background
+  - Large, bold typography: "Not sure where to go? Perfect."
+  - Integrated search form overlay
+  - Dark gradient backdrop for readability
+- **Category Navigation**
+  - Pill-shaped filter buttons
+  - Active state with dark background
+  - Smooth hover transitions
+- **Feature Cards**
+  - Gradient icon backgrounds (Rose, Blue, Emerald, Purple)
+  - Hover scaling animation
+  - 4-column responsive grid
+- **Trust Indicators**
+  - 5-star rating display
+  - Social proof messaging
+  - Clean, confident presentation
+
+#### Flight Cards Redesign
+- **Visual Hierarchy**
+  - Large 3xl time display for quick scanning
+  - Gradient airline icon badge
+  - Visual flight path with plane icon
+  - Clean divider lines between sections
+- **Improved Information Architecture**
+  - Origin and destination with airport names
+  - Duration and stops on flight path
+  - Cabin class, carbon emissions, rating
+  - Right-aligned pricing with "per person" label
+- **Interaction Design**
+  - Rose-colored heart for favorites (fills on click)
+  - ChevronRight indicator on hover
+  - Card elevation on hover
+  - Smooth shadow transitions
+
+#### Hotel Cards Redesign
+- **Airbnb-Style Vertical Layout**
+  - 4:3 aspect ratio image (perfect for property photos)
+  - 700ms zoom effect on image hover
+  - Floating favorite button with backdrop blur
+  - Star rating badge overlay on image
+- **Content Organization**
+  - Location with map pin icon
+  - Hotel name (line-clamped to 1 line)
+  - First 3 amenities with icons
+  - Review score and count
+  - Distance to city center
+  - Large, bold price display
+- **Premium Feel**
+  - White/90 opacity overlays with blur
+  - Subtle transitions on all interactions
+  - Professional spacing and typography
+  - Clean, uncluttered design
+
+### 🚀 Performance Improvements
+- **Optimized Animations** - GPU-accelerated transforms
+- **Efficient Hover States** - CSS-only transitions
+- **Image Optimization** - Next.js Image with responsive loading
+- **No Layout Shift** - Fixed aspect ratios prevent CLS
+
+### 🎯 Design Principles Applied
+1. **Minimalism** - Remove unnecessary elements
+2. **Breathing Room** - Generous white space
+3. **Visual Hierarchy** - Clear information priority
+4. **Consistency** - Unified design language
+5. **Delight** - Subtle animations and interactions
+6. **Accessibility** - Proper contrast and focus states
+
+### 📐 Technical Details
+- **Tailwind Classes** - Extended with custom utilities
+- **Color Palette** - Rose-500, Pink-600, Gray scale
+- **Border Radius** - Consistent 2xl (16px) rounded corners
+- **Shadow System** - Elevation from sm to 2xl
+- **Transition Durations** - 200ms (quick), 300ms (standard), 700ms (slow)
+
+### 🎨 Before & After
+- **Old**: Basic cards with simple shadows
+- **New**: Premium cards with hover effects and gradients
+- **Old**: Standard hero with gradient background
+- **New**: Immersive hero with image and bold typography
+- **Old**: Simple button styles
+- **New**: Gradient buttons with elevation
+
 ## [User Settings & Booking Flow] - 2025-11-18
 
 ### ⚙️ User Settings Page
