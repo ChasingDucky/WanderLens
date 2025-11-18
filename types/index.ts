@@ -110,6 +110,31 @@ export interface Activity {
   };
 }
 
+export type AgentType =
+  | 'travel-planner'
+  | 'destination-expert'
+  | 'budget-optimizer'
+  | 'culture-guide'
+  | 'itinerary-optimizer'
+  | 'travel-companion';
+
+export interface AIAgent {
+  id: AgentType;
+  name: string;
+  description: string;
+  icon: string;
+  systemPrompt: string;
+  color: string;
+  capabilities: string[];
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
 export interface SearchParams {
   origin?: string;
   destination?: string;

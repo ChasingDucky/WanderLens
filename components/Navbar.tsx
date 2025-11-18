@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Plane, Hotel, MapPin, Menu, X, Info, HelpCircle, Settings, Sparkles } from 'lucide-react';
+import { Plane, Hotel, MapPin, Menu, X, Info, HelpCircle, Settings, Sparkles, Bot } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -50,6 +50,13 @@ export default function Navbar() {
             >
               <Sparkles className="w-5 h-5" />
               <span className="font-bold">AI Planner</span>
+            </Link>
+            <Link
+              href="/agents"
+              className="flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-all"
+            >
+              <Bot className="w-5 h-5" />
+              <span className="font-bold">AI助手</span>
             </Link>
             <div className="border-l border-gray-300 h-6"></div>
             <Link
