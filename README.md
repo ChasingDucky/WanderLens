@@ -95,6 +95,130 @@ npm run build
 npm start
 ```
 
+## 🐳 Docker Deployment
+
+WanderLens includes full Docker support for easy deployment on port **3666**.
+
+### Quick Start with Docker
+
+#### Using Docker Compose (Recommended)
+
+```bash
+# Build and start the container
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the container
+docker-compose down
+```
+
+#### Using the Helper Script
+
+```bash
+# Make the script executable (first time only)
+chmod +x docker-start.sh
+
+# Build the image
+./docker-start.sh build
+
+# Start the container
+./docker-start.sh start
+
+# View logs
+./docker-start.sh logs
+
+# Stop the container
+./docker-start.sh stop
+
+# Rebuild everything
+./docker-start.sh rebuild
+```
+
+#### Using Makefile
+
+```bash
+# Build Docker image
+make build
+
+# Start container
+make start
+
+# View logs
+make logs
+
+# Stop container
+make stop
+
+# Rebuild and restart
+make rebuild
+
+# Clean up
+make clean
+```
+
+### Docker Commands Reference
+
+| Command | Description |
+|---------|-------------|
+| `docker-compose up -d` | Start container in background |
+| `docker-compose down` | Stop and remove container |
+| `docker-compose logs -f` | Follow container logs |
+| `docker-compose ps` | Check container status |
+| `docker-compose build` | Build Docker image |
+
+### Accessing the Application
+
+After starting the Docker container, access WanderLens at:
+- **URL**: http://localhost:3666
+- **Port**: 3666
+
+### Environment Variables
+
+You can customize the deployment by modifying `docker-compose.yml`:
+
+```yaml
+environment:
+  - NODE_ENV=production
+  - PORT=3666
+  - HOSTNAME=0.0.0.0
+  - NEXT_TELEMETRY_DISABLED=1
+```
+
+### Health Check
+
+The container includes a built-in health check that monitors the application status:
+- Interval: 30 seconds
+- Timeout: 10 seconds
+- Retries: 3
+- Start period: 40 seconds
+
+### Troubleshooting
+
+**Container won't start?**
+```bash
+# Check logs
+docker-compose logs
+
+# Verify port is available
+lsof -i :3666
+```
+
+**Need to rebuild?**
+```bash
+# Clean rebuild
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**Permission issues?**
+```bash
+# Ensure script is executable
+chmod +x docker-start.sh
+```
+
 ## 📁 Project Structure
 
 ```
