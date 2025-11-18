@@ -136,3 +136,43 @@ export interface RailPass {
   reviewCount: number;
   popular: boolean;
 }
+
+export interface MealPackage {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice?: number; // for showing discounts
+  items: string[]; // list of dishes included
+  servings: number; // number of people
+  validDays: string[]; // e.g., ["Monday", "Tuesday", "Wednesday"]
+  validTime?: string; // e.g., "Lunch only" or "Dinner only"
+  popular?: boolean;
+}
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  cuisine: string; // e.g., "Japanese", "Italian", "French", "Chinese"
+  address: string;
+  city: string;
+  country: string;
+  rating: number;
+  reviewCount: number;
+  priceLevel: number; // 1-4 ($ to $$$$)
+  images: string[];
+  description: string;
+  specialties: string[]; // signature dishes
+  amenities: string[]; // e.g., "WiFi", "Outdoor Seating", "Private Rooms"
+  openingHours: {
+    [key: string]: string; // e.g., "Monday": "11:00-22:00"
+  };
+  acceptsReservations: boolean;
+  mealPackages: MealPackage[];
+  averageMealPrice: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  tags: string[]; // e.g., "Romantic", "Family-friendly", "Michelin Star"
+}
