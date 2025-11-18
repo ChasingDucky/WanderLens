@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Plane, Hotel, MapPin, Menu, X, Info, HelpCircle } from 'lucide-react';
+import { Plane, Hotel, MapPin, Menu, X, Info, HelpCircle, Settings } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -59,6 +59,13 @@ export default function Navbar() {
               <HelpCircle className="w-5 h-5" />
               <span className="font-medium">Help</span>
             </Link>
+            <Link
+              href="/settings"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+            >
+              <Settings className="w-5 h-5" />
+              <span className="font-medium">Settings</span>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -113,6 +120,14 @@ export default function Navbar() {
             >
               <HelpCircle className="w-5 h-5" />
               <span className="font-medium">Help</span>
+            </Link>
+            <Link
+              href="/settings"
+              className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Settings className="w-5 h-5" />
+              <span className="font-medium">Settings</span>
             </Link>
           </div>
         )}
