@@ -55,8 +55,44 @@ export interface Itinerary {
   flights: Flight[];
   hotels: Hotel[];
   activities: Activity[];
+  restaurants?: Restaurant[];
+  trains?: Train[];
   totalCost: number;
   currency: string;
+  aiGenerated?: boolean;
+  bundleDiscount?: number; // percentage discount for AI bundles
+  editable?: boolean;
+  tags?: string[];
+}
+
+export type MembershipTier = 'standard' | 'gold';
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  membershipTier: MembershipTier;
+  preferences?: {
+    budgetRange?: string; // e.g., "budget", "mid-range", "luxury"
+    travelStyle?: string[]; // e.g., ["adventure", "culture", "relaxation"]
+    cuisinePreferences?: string[];
+    destinations?: string[];
+  };
+  travelHistory?: string[]; // past destinations
+  joinedDate: Date;
+}
+
+export interface AIItineraryRequest {
+  destination: string;
+  startDate: Date;
+  endDate: Date;
+  travelers: number;
+  budget?: number;
+  preferences?: {
+    pace?: 'relaxed' | 'moderate' | 'packed';
+    interests?: string[];
+    mustHave?: string[]; // e.g., ["michelin-dining", "luxury-hotel"]
+  };
 }
 
 export interface Activity {
