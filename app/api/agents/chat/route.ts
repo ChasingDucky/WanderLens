@@ -36,14 +36,15 @@ export async function POST(request: NextRequest) {
 
     // Select model based on membership tier (Booking Genius-style)
     // Gold (Genius Level 2): Gemini 1.5 Pro - highest quality, 10% discount
-    // Silver (Genius Level 1): Gemini 2.0 Flash Exp - fast & efficient, 5% discount
-    // Standard: Gemini 1.5 Flash - basic, free
+    // Silver (Genius Level 1): Gemini 1.5 Flash - standard quality, 5% discount + priority
+    // Standard: Gemini 1.5 Flash - basic, free (with rate limits)
+    // Note: Silver uses same model as Standard but gets priority API access and discounts
     let modelName: string;
     if (membershipTier === 'gold') {
       modelName = 'gemini-1.5-pro';
-    } else if (membershipTier === 'silver') {
-      modelName = 'gemini-2.0-flash-exp';
     } else {
+      // Both silver and standard use gemini-1.5-flash
+      // Difference is in discounts and priority access (handled separately)
       modelName = 'gemini-1.5-flash';
     }
     const model = genAI.getGenerativeModel({ model: modelName });
