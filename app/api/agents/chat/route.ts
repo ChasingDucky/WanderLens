@@ -46,19 +46,19 @@ export async function POST(request: NextRequest) {
     // Initialize Gemini API with user token
     const genAI = new GoogleGenerativeAI(userToken);
 
-    // Select model based on membership tier (Booking Genius-style)
-    // Gold (Genius Level 2): Gemini 2.5 Pro - highest quality, 10% discount
-    // Silver (Genius Level 1): Gemini 2.5 Flash - standard quality, 5% discount + priority
-    // Standard: Gemini 2.5 Flash - basic, free (with rate limits)
-    // Note: Silver uses same model as Standard but gets priority API access and discounts
-    let modelName: string;
-    if (membershipTier === 'gold') {
-      modelName = 'gemini-2.5-pro';
-    } else {
-      // Both silver and standard use gemini-2.5-flash
-      // Difference is in discounts and priority access (handled separately)
-      modelName = 'gemini-2.5-flash';
-    }
+    // Temporarily remove tier restrictions - use stable model for all users
+    // Using gemini-1.5-flash as it's the most stable and widely available
+    // TODO: Re-enable tiered access once model names are confirmed
+    const modelName = 'gemini-1.5-flash';
+
+    // Previous tier-based selection (commented out temporarily):
+    // if (membershipTier === 'gold') {
+    //   modelName = 'gemini-2.5-pro';
+    // } else {
+    //   modelName = 'gemini-2.5-flash';
+    // }
+
+    console.log(`Using model: ${modelName} for user with tier: ${membershipTier || 'standard'}`);
     const model = genAI.getGenerativeModel({ model: modelName });
 
     // Build conversation history for context
