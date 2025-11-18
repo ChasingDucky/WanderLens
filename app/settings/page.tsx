@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { Settings, Globe, DollarSign, Bell, User, Shield, Moon, Sun, Bot, Crown, Key, Eye, EyeOff } from 'lucide-react';
 import { MembershipTier } from '@/types';
+import { MEMBERSHIP_TIERS, getMembershipByTier } from '@/lib/membership';
 
 interface UserSettings {
   currency: string;
@@ -126,52 +127,60 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-6">
-              {/* Membership Tier Selection */}
+              {/* Membership Tier Selection - Booking Genius Style */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   <Crown className="w-4 h-4 inline mr-1" />
-                  会员等级
+                  会员等级 (Genius会员体系)
                 </label>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    onClick={() => setMembershipTier('standard')}
-                    className={`p-4 rounded-lg border-2 transition-all ${
-                      membershipTier === 'standard'
-                        ? 'border-blue-600 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <div className="text-3xl mb-2">🎫</div>
-                    <p className={`font-bold mb-1 ${membershipTier === 'standard' ? 'text-blue-600' : 'text-gray-900'}`}>
-                      标准会员
-                    </p>
-                    <p className="text-xs text-gray-600 mb-2">使用 Gemini 2.0 Flash</p>
-                    <ul className="text-xs text-left space-y-1 text-gray-600">
-                      <li>✓ 更快的响应速度</li>
-                      <li>✓ 更低的使用成本</li>
-                      <li>✓ 适合日常咨询</li>
-                    </ul>
-                  </button>
-
-                  <button
-                    onClick={() => setMembershipTier('gold')}
-                    className={`p-4 rounded-lg border-2 transition-all ${
-                      membershipTier === 'gold'
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {MEMBERSHIP_TIERS.map((tier) => {
+                    const isSelected = membershipTier === tier.tier;
+                    const bgClass = isSelected
+                      ? tier.tier === 'gold'
                         ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-yellow-50'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <div className="text-3xl mb-2">👑</div>
-                    <p className={`font-bold mb-1 ${membershipTier === 'gold' ? 'text-amber-600' : 'text-gray-900'}`}>
-                      金卡会员
-                    </p>
-                    <p className="text-xs text-gray-600 mb-2">使用 Gemini 1.5 Pro</p>
-                    <ul className="text-xs text-left space-y-1 text-gray-600">
-                      <li>✓ 更高质量回答</li>
-                      <li>✓ 更强理解能力</li>
-                      <li>✓ 复杂问题处理</li>
-                    </ul>
-                  </button>
+                        : tier.tier === 'silver'
+                        ? 'border-slate-500 bg-gradient-to-br from-slate-50 to-gray-50'
+                        : 'border-gray-600 bg-gray-50'
+                      : 'border-gray-200 hover:border-gray-300 bg-white';
+
+                    const textClass = isSelected
+                      ? tier.tier === 'gold'
+                        ? 'text-amber-600'
+                        : tier.tier === 'silver'
+                        ? 'text-slate-600'
+                        : 'text-gray-700'
+                      : 'text-gray-900';
+
+                    return (
+                      <button
+                        key={tier.tier}
+                        onClick={() => setMembershipTier(tier.tier)}
+                        className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${bgClass}`}
+                      >
+                        <div className="text-3xl mb-2">{tier.icon}</div>
+                        <p className={`font-bold mb-1 text-sm ${textClass}`}>
+                          {tier.displayName}
+                        </p>
+                        <p className="text-xs text-gray-500 mb-2">{tier.aiModel}</p>
+                        {tier.discount > 0 && (
+                          <div className="mb-2 px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">
+                            {tier.discount}% 全站折扣
+                          </div>
+                        )}
+                        {tier.bookingsRequired > 0 && (
+                          <p className="text-xs text-gray-500 mb-2">
+                            需要 {tier.bookingsRequired} 次预订
+                          </p>
+                        )}
+                        <ul className="text-xs text-left space-y-1 text-gray-600">
+                          {tier.benefits.slice(0, 3).map((benefit, idx) => (
+                            <li key={idx}>✓ {benefit}</li>
+                          ))}
+                        </ul>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -216,16 +225,30 @@ export default function SettingsPage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">会员等级：</span>
-                    <span className={`font-semibold ${membershipTier === 'gold' ? 'text-amber-600' : 'text-blue-600'}`}>
-                      {membershipTier === 'gold' ? '金卡会员 👑' : '标准会员 🎫'}
+                    <span className={`font-semibold flex items-center gap-1 ${
+                      membershipTier === 'gold'
+                        ? 'text-amber-600'
+                        : membershipTier === 'silver'
+                        ? 'text-slate-600'
+                        : 'text-gray-700'
+                    }`}>
+                      {getMembershipByTier(membershipTier).displayName} {getMembershipByTier(membershipTier).icon}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">使用模型：</span>
                     <span className="font-semibold text-purple-600">
-                      {membershipTier === 'gold' ? 'Gemini 1.5 Pro' : 'Gemini 2.0 Flash'}
+                      {getMembershipByTier(membershipTier).aiModel}
                     </span>
                   </div>
+                  {getMembershipByTier(membershipTier).discount > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">专属折扣：</span>
+                      <span className="font-semibold text-red-600">
+                        {getMembershipByTier(membershipTier).discount}% OFF
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-gray-600">Token状态：</span>
                     <span className={`font-semibold ${geminiToken ? 'text-green-600' : 'text-red-600'}`}>

@@ -65,13 +65,26 @@ export interface Itinerary {
   tags?: string[];
 }
 
-export type MembershipTier = 'standard' | 'gold';
+export type MembershipTier = 'standard' | 'silver' | 'gold';
+
+export interface MembershipBenefits {
+  tier: MembershipTier;
+  name: string;
+  displayName: string;
+  icon: string;
+  color: string;
+  aiModel: string;
+  discount: number; // percentage
+  bookingsRequired: number;
+  benefits: string[];
+}
 
 export interface UserProfile {
   id: string;
   name: string;
   email: string;
   membershipTier: MembershipTier;
+  bookingsCount?: number; // total completed bookings
   preferences?: {
     budgetRange?: string; // e.g., "budget", "mid-range", "luxury"
     travelStyle?: string[]; // e.g., ["adventure", "culture", "relaxation"]

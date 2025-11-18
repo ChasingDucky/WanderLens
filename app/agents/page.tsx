@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { AI_AGENTS } from '@/lib/agents';
 import { ChatMessage, AgentType, MembershipTier } from '@/types';
+import { getMembershipByTier } from '@/lib/membership';
 import { Send, Loader2, ArrowLeft, Sparkles, Bot, Settings, AlertCircle } from 'lucide-react';
 
 export default function AgentsPage() {
@@ -148,7 +149,7 @@ export default function AgentsPage() {
               <div className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
                 <Sparkles className="w-4 h-4" />
                 <span>
-                  {membershipTier === 'gold' ? '由 Gemini 1.5 Pro 驱动' : '由 Gemini 2.0 Flash 驱动'} • {membershipTier === 'gold' ? '金卡会员' : '标准会员'}
+                  由 {getMembershipByTier(membershipTier).aiModel} 驱动 • {getMembershipByTier(membershipTier).displayName}
                 </span>
               </div>
               {!userToken && (

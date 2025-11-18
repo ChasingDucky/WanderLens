@@ -34,10 +34,18 @@ export async function POST(request: NextRequest) {
     // Initialize Gemini API with user token
     const genAI = new GoogleGenerativeAI(userToken);
 
-    // Select model based on membership tier
-    // Gold members get Gemini 1.5 Pro (better quality, more expensive)
-    // Standard members get Gemini 2.0 Flash (faster, cheaper)
-    const modelName = membershipTier === 'gold' ? 'gemini-1.5-pro' : 'gemini-2.0-flash-exp';
+    // Select model based on membership tier (Booking Genius-style)
+    // Gold (Genius Level 2): Gemini 1.5 Pro - highest quality, 10% discount
+    // Silver (Genius Level 1): Gemini 2.0 Flash Exp - fast & efficient, 5% discount
+    // Standard: Gemini 1.5 Flash - basic, free
+    let modelName: string;
+    if (membershipTier === 'gold') {
+      modelName = 'gemini-1.5-pro';
+    } else if (membershipTier === 'silver') {
+      modelName = 'gemini-2.0-flash-exp';
+    } else {
+      modelName = 'gemini-1.5-flash';
+    }
     const model = genAI.getGenerativeModel({ model: modelName });
 
     // Build conversation history for context
