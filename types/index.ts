@@ -150,6 +150,19 @@ export interface MealPackage {
   popular?: boolean;
 }
 
+export interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string; // e.g., "Appetizers", "Main Course", "Desserts", "Drinks"
+  imageUrl?: string;
+  popular?: boolean;
+  spicy?: boolean;
+  vegetarian?: boolean;
+  tags?: string[];
+}
+
 export interface Restaurant {
   id: string;
   name: string;
@@ -175,4 +188,11 @@ export interface Restaurant {
     lng: number;
   };
   tags: string[]; // e.g., "Romantic", "Family-friendly", "Michelin Star"
+  // Delivery features (UberEats-style)
+  offersDelivery: boolean;
+  deliveryFee: number;
+  deliveryTime: number; // estimated delivery time in minutes
+  minimumOrder: number;
+  freeDeliveryThreshold?: number; // free delivery above this amount
+  menuItems?: MenuItem[]; // menu for delivery orders
 }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Restaurant } from '@/types';
 import { formatCurrency } from '@/lib/utils';
-import { Star, MapPin, Heart, Utensils, Tag, Award } from 'lucide-react';
+import { Star, MapPin, Heart, Utensils, Tag, Award, Truck } from 'lucide-react';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -74,10 +74,18 @@ export default function RestaurantCard({ restaurant, badge }: RestaurantCardProp
           />
         </button>
 
-        {/* Cuisine Label */}
-        <div className="absolute bottom-3 left-3 px-3 py-1 bg-white/95 backdrop-blur-sm rounded-full flex items-center space-x-1">
-          <Utensils className="w-3 h-3 text-gray-700" />
-          <span className="text-xs font-semibold text-gray-700">{restaurant.cuisine}</span>
+        {/* Cuisine & Delivery Labels */}
+        <div className="absolute bottom-3 left-3 flex gap-2">
+          <div className="px-3 py-1 bg-white/95 backdrop-blur-sm rounded-full flex items-center space-x-1">
+            <Utensils className="w-3 h-3 text-gray-700" />
+            <span className="text-xs font-semibold text-gray-700">{restaurant.cuisine}</span>
+          </div>
+          {restaurant.offersDelivery && (
+            <div className="px-3 py-1 bg-green-600 text-white rounded-full flex items-center space-x-1">
+              <Truck className="w-3 h-3" />
+              <span className="text-xs font-bold">{restaurant.deliveryTime}min</span>
+            </div>
+          )}
         </div>
       </div>
 
