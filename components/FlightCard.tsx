@@ -46,29 +46,29 @@ export default function FlightCard({ flight, onSelect, badges = [] }: FlightCard
 
   return (
     <div
-      className="group bg-white rounded-2xl border border-gray-200 hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
+      className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer overflow-hidden"
       onClick={handleCardClick}
     >
       <div className="p-6">
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center">
-              <Plane className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Plane className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">{flight.airline}</h3>
+              <h3 className="text-base font-semibold text-gray-900">{flight.airline}</h3>
               <p className="text-sm text-gray-500">{flight.flightNumber}</p>
             </div>
           </div>
 
           <button
             onClick={handleFavoriteClick}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-50 rounded-full transition-colors"
           >
             <Heart
-              className={`w-6 h-6 transition-all ${
-                isFavorite ? 'fill-rose-500 text-rose-500 scale-110' : 'text-gray-400'
+              className={`w-5 h-5 ${
+                isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'
               }`}
             />
           </button>

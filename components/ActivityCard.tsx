@@ -79,16 +79,14 @@ export default function ActivityCard({ activity, badge }: ActivityCardProps) {
 
   return (
     <div
-      className="group bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden"
+      className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer overflow-hidden"
       onClick={handleCardClick}
     >
       {/* Image Header */}
-      <div className="relative h-48 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(activity.category)} opacity-90`}>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-white">
-              {getCategoryIcon(activity.category)}
-            </div>
+      <div className="relative h-40 overflow-hidden bg-blue-50">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-blue-600">
+            {getCategoryIcon(activity.category)}
           </div>
         </div>
 
@@ -97,8 +95,8 @@ export default function ActivityCard({ activity, badge }: ActivityCardProps) {
           const config = getBadgeConfig(badge);
           if (!config) return null;
           return (
-            <div className="absolute top-3 left-3 z-10">
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${config.color} shadow-lg`}>
+            <div className="absolute top-2 left-2">
+              <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${config.color}`}>
                 {config.label}
               </span>
             </div>
@@ -108,25 +106,25 @@ export default function ActivityCard({ activity, badge }: ActivityCardProps) {
         {/* Favorite Button */}
         <button
           onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 z-10 p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full transition-all shadow-md"
+          className="absolute top-2 right-2 p-2 bg-white hover:bg-gray-50 rounded-full transition-colors shadow-sm"
         >
           <Heart
-            className={`w-5 h-5 transition-all ${
-              isFavorite ? 'fill-rose-500 text-rose-500 scale-110' : 'text-gray-600'
+            className={`w-4 h-4 ${
+              isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'
             }`}
           />
         </button>
 
         {/* Category Label */}
-        <div className="absolute bottom-3 left-3 px-3 py-1 bg-white/95 backdrop-blur-sm rounded-full flex items-center space-x-1">
-          <span className="text-xs font-semibold text-gray-700 capitalize">{activity.category}</span>
+        <div className="absolute bottom-2 left-2 px-2 py-1 bg-white rounded text-xs font-medium text-gray-700 capitalize">
+          {activity.category}
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4">
         {/* Title & Rating */}
-        <div className="mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
+        <div className="mb-2">
+          <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-2">
             {activity.name}
           </h3>
           <div className="flex items-center space-x-2">

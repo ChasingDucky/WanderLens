@@ -27,28 +27,20 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Hero Section - Airbnb Style */}
-      <div className="relative h-[600px] -mt-px">
-        {/* Background Image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-700">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920')] bg-cover bg-center opacity-40"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative h-full flex flex-col items-center justify-center px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-              Not sure where to go?
-              <br />
-              <span className="text-4xl md:text-6xl">Perfect.</span>
+      {/* Hero Section - Simplified */}
+      <div className="bg-gray-50 pt-32 pb-20 -mt-px">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Plan your perfect trip
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
-              Discover amazing destinations and experiences around the world
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Search flights, hotels, and activities all in one place
             </p>
           </div>
 
           {/* Search Form */}
-          <div className="w-full max-w-4xl">
+          <div className="w-full max-w-4xl mx-auto">
             <SearchForm />
           </div>
         </div>
@@ -60,23 +52,23 @@ export default function Home() {
       {/* Inspiration Section */}
       <div className="section-container">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-4">
-            Inspiration for your next trip
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+            Popular Destinations
           </h2>
-          <p className="text-xl text-gray-600">
-            Explore trending destinations and unique experiences
+          <p className="text-gray-600">
+            Explore trending destinations
           </p>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex justify-center space-x-4 mb-12 flex-wrap gap-2">
+        <div className="flex justify-center space-x-3 mb-12 flex-wrap gap-2">
           {['All', 'Beaches', 'Mountains', 'Cities', 'Culture'].map((category) => (
             <button
               key={category}
-              className={`px-6 py-3 rounded-full font-medium transition-all ${
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 category === 'All'
-                  ? 'bg-gray-900 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-300'
               }`}
             >
               {category}
@@ -93,46 +85,46 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="bg-gradient-to-b from-gray-50 to-white py-20">
+      <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center group">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Sparkles className="w-10 h-10 text-white" />
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-blue-50 mb-4">
+                <Sparkles className="w-7 h-7 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Smart Recommendations</h3>
-              <p className="text-gray-600 leading-relaxed">
-                AI-powered suggestions tailored to your preferences
+              <h3 className="text-base font-semibold text-gray-900 mb-2">Smart Recommendations</h3>
+              <p className="text-sm text-gray-600">
+                AI-powered suggestions
               </p>
             </div>
 
-            <div className="text-center group">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <TrendingUp className="w-10 h-10 text-white" />
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-blue-50 mb-4">
+                <TrendingUp className="w-7 h-7 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Price Tracking</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Know when to book with predictive pricing
+              <h3 className="text-base font-semibold text-gray-900 mb-2">Price Tracking</h3>
+              <p className="text-sm text-gray-600">
+                Predictive pricing alerts
               </p>
             </div>
 
-            <div className="text-center group">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Leaf className="w-10 h-10 text-white" />
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-blue-50 mb-4">
+                <Leaf className="w-7 h-7 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Sustainable Travel</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Choose eco-friendly options for your journey
+              <h3 className="text-base font-semibold text-gray-900 mb-2">Sustainable Travel</h3>
+              <p className="text-sm text-gray-600">
+                Eco-friendly options
               </p>
             </div>
 
-            <div className="text-center group">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-10 h-10 text-white" />
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-blue-50 mb-4">
+                <Users className="w-7 h-7 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Shared Planning</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Collaborate with friends and family easily
+              <h3 className="text-base font-semibold text-gray-900 mb-2">Shared Planning</h3>
+              <p className="text-sm text-gray-600">
+                Collaborate with ease
               </p>
             </div>
           </div>

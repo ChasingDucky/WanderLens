@@ -46,34 +46,30 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
       onClick={handleCardClick}
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-3">
+      <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3">
         <Image
           src={hotel.images[0]}
           alt={hotel.name}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          className="object-cover"
         />
 
         {/* Favorite Button */}
         <button
           onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all"
+          className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-sm hover:shadow transition-shadow"
         >
           <Heart
-            className={`w-5 h-5 transition-all ${
-              isFavorite ? 'fill-rose-500 text-rose-500' : 'text-gray-700'
+            className={`w-4 h-4 ${
+              isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'
             }`}
           />
         </button>
 
         {/* Star Rating Badge */}
         {hotel.stars > 0 && (
-          <div className="absolute top-3 left-3 px-2 py-1 bg-white/90 rounded-lg backdrop-blur-sm">
-            <div className="flex items-center space-x-1">
-              {[...Array(hotel.stars)].map((_, i) => (
-                <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
+          <div className="absolute top-2 left-2 px-2 py-1 bg-white rounded text-xs font-medium">
+            {hotel.stars}★
           </div>
         )}
       </div>
@@ -87,7 +83,7 @@ export default function HotelCard({ hotel, onSelect }: HotelCardProps) {
         </div>
 
         {/* Name */}
-        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 group-hover:text-gray-700 transition-colors">
+        <h3 className="text-base font-semibold text-gray-900 line-clamp-1">
           {hotel.name}
         </h3>
 

@@ -13,10 +13,10 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-primary-600 to-primary-400 p-2 rounded-lg">
+            <div className="bg-blue-600 p-2 rounded-lg">
               <Plane className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold text-gray-900">
               WanderLens
             </span>
           </Link>
@@ -46,17 +46,17 @@ export default function Navbar() {
             </Link>
             <Link
               href="/ai-planner"
-              className="flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all"
+              className="flex items-center space-x-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <Sparkles className="w-5 h-5" />
-              <span className="font-bold">AI Planner</span>
+              <Sparkles className="w-4 h-4" />
+              <span className="font-medium text-sm">AI Planner</span>
             </Link>
             <Link
               href="/agents"
-              className="flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-all"
+              className="flex items-center space-x-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <Bot className="w-5 h-5" />
-              <span className="font-bold">AI助手</span>
+              <Bot className="w-4 h-4" />
+              <span className="font-medium text-sm">AI助手</span>
             </Link>
             <div className="border-l border-gray-300 h-6"></div>
             <Link
