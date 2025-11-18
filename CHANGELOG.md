@@ -2,6 +2,128 @@
 
 All notable changes to WanderLens will be documented in this file.
 
+## [User Settings & Booking Flow] - 2025-11-18
+
+### ⚙️ User Settings Page
+
+#### Profile Management
+- **Personal Information** - Display name and email settings
+- **Profile Persistence** - Settings saved to localStorage
+- **Real-time Updates** - Immediate feedback on changes
+
+#### Regional Settings
+- **Currency Selection** - 8 supported currencies (USD, EUR, GBP, JPY, CNY, AUD, CAD, CHF)
+- **Language Options** - 7 language choices (English, 中文, Español, Français, Deutsch, 日本語, 한국어)
+- **Locale Integration** - Settings applied across the platform
+
+#### Notification Preferences
+- **Price Alerts** - Toggle for price drop notifications
+- **Booking Updates** - Stay informed about trip changes
+- **Promotional Offers** - Opt-in/out of marketing emails
+- **Toggle Switches** - Beautiful UI with smooth animations
+
+#### Appearance Settings
+- **Theme Selection** - Light, Dark, or Auto mode
+- **Visual Icons** - Clear theme previews
+- **User Preference** - Persistent theme choice
+
+#### Privacy & Security
+- **Clear Search History** - Remove all saved searches
+- **Clear Favorites** - Delete bookmarked items
+- **Data Controls** - User control over stored data
+
+### 💳 Booking Flow System
+
+#### Multi-Step Booking Process
+- **Step 1: Personal Information**
+  - First name, last name input
+  - Email and phone validation
+  - Optional address fields
+  - City, ZIP code, country
+
+- **Step 2: Payment Details**
+  - Secure credit card input
+  - Cardholder name
+  - Expiry date and CVV
+  - Security encryption notice
+
+- **Step 3: Review & Confirm**
+  - Personal info summary
+  - Payment method display
+  - Terms acceptance
+  - Final review before submission
+
+- **Step 4: Confirmation**
+  - Booking confirmation number
+  - Email confirmation notice
+  - Print booking option
+  - Return to home navigation
+
+#### Booking Features
+- **Progress Indicator** - Visual step tracker
+- **Form Validation** - Required field checking
+- **Booking Summary** - Real-time price calculation
+- **Responsive Design** - Works on all devices
+- **Secure Payment** - Encrypted transaction handling
+
+### 🛠️ Utility Libraries
+
+#### Currency Converter (lib/currency.ts)
+- **Exchange Rates** - Real-time conversion for 8 currencies
+- **Format Functions** - Localized currency display
+- **User Preference** - Auto-convert based on settings
+- **Conversion Logic** - USD base with accurate rates
+
+#### Search History Manager (lib/searchHistory.ts)
+- **Flight History** - Track recent flight searches
+- **Hotel History** - Save hotel search queries
+- **Timestamp Display** - Human-readable time (e.g., "2 hours ago")
+- **Duplicate Prevention** - Smart deduplication
+- **Storage Limit** - Keep last 10 searches
+- **Clear Functions** - Individual or bulk deletion
+
+### 🔗 Social Sharing
+
+#### ShareButton Component
+- **Native Share API** - Uses device share when available
+- **Social Platforms** - Twitter, Facebook, LinkedIn
+- **Copy Link** - Clipboard integration
+- **Beautiful UI** - Dropdown menu with icons
+- **Confirmation Feedback** - Visual "copied" state
+
+### 🎨 Navigation Updates
+
+- **Settings Link** - Added to navbar (desktop & mobile)
+- **Settings Icon** - Clear visual indicator
+- **Mobile Menu** - Updated with new navigation item
+
+### 📊 Platform Statistics
+
+**Total Pages**: 11 routes
+- Homepage
+- Flights search & detail
+- Hotels search & detail
+- Itinerary planner
+- About & Help pages
+- **Settings** (NEW)
+- **Booking flow** (NEW)
+- Error pages (404, error, global-error)
+- Loading state
+
+**Bundle Sizes**:
+- Settings page: 101 kB
+- Booking page: 101 kB
+- Optimized for performance
+
+### 🔧 Technical Improvements
+
+- **TypeScript Interfaces** - Full type safety for all new features
+- **LocalStorage Integration** - Persistent user preferences
+- **Client-side State** - Efficient React state management
+- **Form Handling** - Comprehensive validation
+- **Suspense Boundaries** - Better loading states
+- **Code Organization** - Modular utility libraries
+
 ## [Advanced Filters & Error Pages] - 2025-11-18
 
 ### ✨ Enhanced Search Features
