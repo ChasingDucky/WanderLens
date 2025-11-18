@@ -20,7 +20,7 @@ const QUICK_DATES = [
 
 export default function SearchForm() {
   const router = useRouter();
-  const [searchType, setSearchType] = useState<'flights' | 'hotels'>('flights');
+  const [searchType, setSearchType] = useState<'flights' | 'hotels' | 'trains'>('flights');
   const [showQuickOptions, setShowQuickOptions] = useState(true);
   const [formData, setFormData] = useState({
     origin: '',
@@ -87,6 +87,14 @@ export default function SearchForm() {
         passengers: formData.passengers.toString(),
       });
       router.push(`/flights?${params.toString()}`);
+    } else if (searchType === 'trains') {
+      const params = new URLSearchParams({
+        origin: formData.origin,
+        destination: formData.destination,
+        departDate: formData.departDate,
+        passengers: formData.passengers.toString(),
+      });
+      router.push(`/trains?${params.toString()}`);
     } else {
       const params = new URLSearchParams({
         city: formData.destination,
@@ -111,6 +119,16 @@ export default function SearchForm() {
           }`}
         >
           ✈️ Flights
+        </button>
+        <button
+          onClick={() => setSearchType('trains')}
+          className={`px-8 py-3 rounded-full font-semibold transition-all ${
+            searchType === 'trains'
+              ? 'bg-white text-gray-900 shadow-lg scale-105'
+              : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+          }`}
+        >
+          🚄 Trains
         </button>
         <button
           onClick={() => setSearchType('hotels')}
@@ -149,8 +167,8 @@ export default function SearchForm() {
       {/* Search Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-2xl p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {/* Origin (Flights only) */}
-          {searchType === 'flights' && (
+          {/* Origin (Flights and Trains) */}
+          {(searchType === 'flights' || searchType === 'trains') && (
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
                 From
@@ -162,7 +180,7 @@ export default function SearchForm() {
                   value={formData.origin}
                   onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
                   onFocus={() => setShowQuickOptions(true)}
-                  placeholder="SFO"
+                  placeholder={searchType === 'trains' ? 'Tokyo' : 'SFO'}
                   className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
                   required
                 />
@@ -173,7 +191,7 @@ export default function SearchForm() {
           {/* Destination */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {searchType === 'flights' ? 'To' : 'Where'}
+              {(searchType === 'flights' || searchType === 'trains') ? 'To' : 'Where'}
             </label>
             <div className="relative">
               <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -181,7 +199,7 @@ export default function SearchForm() {
                 type="text"
                 value={formData.destination}
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                placeholder={searchType === 'flights' ? 'NRT' : 'Tokyo'}
+                placeholder={searchType === 'trains' ? 'Osaka' : searchType === 'flights' ? 'NRT' : 'Tokyo'}
                 className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
                 required
               />
@@ -191,7 +209,7 @@ export default function SearchForm() {
           {/* Depart Date */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {searchType === 'flights' ? 'Depart' : 'Check-in'}
+              {(searchType === 'flights' || searchType === 'trains') ? 'Depart' : 'Check-in'}
             </label>
             <div className="relative">
               <CalendarDays className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -205,26 +223,28 @@ export default function SearchForm() {
             </div>
           </div>
 
-          {/* Return Date */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {searchType === 'flights' ? 'Return' : 'Check-out'}
-            </label>
-            <div className="relative">
-              <CalendarDays className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
-              <input
-                type="date"
-                value={formData.returnDate}
-                onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
-                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
-              />
+          {/* Return Date - Hide for trains */}
+          {searchType !== 'trains' && (
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+                {searchType === 'flights' ? 'Return' : 'Check-out'}
+              </label>
+              <div className="relative">
+                <CalendarDays className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                <input
+                  type="date"
+                  value={formData.returnDate}
+                  onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
+                  className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg font-medium"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Passengers */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-              {searchType === 'flights' ? 'Travelers' : 'Guests'}
+              {(searchType === 'flights' || searchType === 'trains') ? 'Travelers' : 'Guests'}
             </label>
             <div className="relative">
               <Users className="absolute left-4 top-4 w-5 h-5 text-gray-400" />

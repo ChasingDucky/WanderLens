@@ -88,3 +88,51 @@ export interface PriceTrend {
   price: number;
   prediction?: boolean;
 }
+
+export interface Train {
+  id: string;
+  operator: string; // e.g., "SNCF", "DB", "JR East", "Amtrak"
+  trainNumber: string;
+  trainType: string; // e.g., "TGV", "ICE", "Shinkansen", "Regional"
+  origin: string;
+  destination: string;
+  departure: Date;
+  arrival: Date;
+  duration: number; // in minutes
+  price: number;
+  currency: string;
+  class: 'standard' | 'first' | 'business' | 'sleeper';
+  amenities: string[]; // e.g., "WiFi", "Dining Car", "Power Outlets"
+  seatAvailability: {
+    window: number;
+    aisle: number;
+    total: number;
+  };
+  rating: number;
+  onTimePerformance: number; // percentage
+  carbonEmission: number; // kg CO2
+  flexibleTicket: boolean; // can change without fee
+  refundable: boolean;
+}
+
+export interface RailPass {
+  id: string;
+  name: string;
+  region: string; // e.g., "Europe", "Japan", "Switzerland"
+  operator: string; // e.g., "Eurail", "JR Group", "SBB"
+  description: string;
+  imageUrl: string;
+  validityDays: number; // how many days the pass is valid
+  travelDays: number; // how many days of travel included
+  price: number;
+  currency: string;
+  ageCategory: 'adult' | 'youth' | 'senior' | 'child';
+  class: 'first' | 'second';
+  features: string[];
+  countries: string[]; // countries covered
+  benefits: string[]; // extra benefits like free museum entries
+  restrictions: string[];
+  rating: number;
+  reviewCount: number;
+  popular: boolean;
+}
